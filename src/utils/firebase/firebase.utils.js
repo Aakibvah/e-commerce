@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   // signInWithRedirect,
 } from 'firebase/auth';
 
@@ -73,10 +74,28 @@ export const createUserDocumentFromAuth = async (
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
   try {
-    await createUserWithEmailAndPassword(auth, email, password);
+    return await createUserWithEmailAndPassword(auth, email, password);
   } catch (err) {
     if (err.code === 'auth/email-already-in-use') {
       alert('user already in use');
+    }
+  }
+};
+
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
+  try {
+    return await signInWithEmailAndPassword(auth, email, password);
+  } catch (err) {
+    switch (err.code) {
+      case 'auth/wrong-password':
+        alert('incorrect password for email');
+        break;
+      case 'auth/user-not-found':
+        alert('no user associated with this email');
+        break;
+      default:
+        console.log(err);
     }
   }
 };
