@@ -73,9 +73,7 @@ export const createUserDocumentFromAuth = async (
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
   try {
-    const user = await createUserWithEmailAndPassword(auth, email, password);
-
-    return user;
+    await createUserWithEmailAndPassword(auth, email, password);
   } catch (err) {
     if (err.code === 'auth/email-already-in-use') {
       alert('user already in use');
